@@ -1,0 +1,459 @@
+@import 'mixins';
+@import 'var';
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: $light;
+    margin: 0;
+    padding: 0;
+    color: $brown;
+    font-size: 38px;
+    font-family: 'Poppins', sans-serif;
+}
+
+h1, h2, h3 {
+    font-size: 80px;
+    line-height: 100px;
+    padding: 0;
+    margin: 0;
+    font-weight: 400;
+
+    @include breakpoint(md) {
+        font-size: 40px;
+        line-height: 50px;
+    }
+    @include breakpoint(xs) {
+        font-size: 30px;
+        line-height: 40px;
+    }
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    width: 100%;
+    display: block;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+}
+
+blockquote {
+    margin: 0;
+}
+
+.container {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1440px;
+    padding: 0 60px;
+
+    &_big {
+        padding: 0 20px;
+    }
+
+    &_flex {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.button {
+    display: inline-block;
+    font-size: 20px;
+    line-height: 29px;
+    padding: 11px 17px;
+    border: 2px solid #4B321D;
+    border-radius: 3px;
+    color: #4B321D;
+
+    @include breakpoint(md) {
+        font-size: 18px;
+        line-height: 24px;
+    }
+}
+
+.header {
+    position: relative;
+    padding: 43px 0;
+}
+
+.nav {
+    @include breakpoint(md) {
+        padding: 15px 0 0 500px;
+        z-index: 1;
+        background-color: #4B321D;
+        position: absolute;
+        top: 0;
+        right: 60px;
+        transform: translateY(-111%);
+        transition: all ease-in-out 0.25s;
+    }
+
+    &__list {
+        display: flex;
+        justify-content: space-between;
+
+        @include breakpoint(md) {
+            padding-left: 0;
+            flex-direction: column;
+        }
+    }
+
+    &__item {
+        font-size: 18px;
+        line-height: 29px;
+        padding: 0 18px;
+
+        @include breakpoint(md) {
+            font-size: 30px;
+            line-height: 45px;
+        }
+    }
+
+    &__link {
+        color: $brown;
+
+        @include breakpoint(md) {
+            color: $light;
+            display: block;
+            text-align: center;
+        }
+    }
+}
+
+.nav.is-active {
+    transform: translateY(0%);
+}
+
+.hamburger {
+    padding: 5px 5px;
+    position: absolute;
+    top: 20px;
+    right: 15px;
+    display: none;
+    cursor: pointer;
+    transition-property: opacity, filter;
+    transition-duration: 0.15s;
+    transition-timing-function: linear;
+    font: inherit;
+    color: inherit;
+    text-transform: none;
+    background-color: transparent;
+    border: 0;
+    margin: 0;
+    overflow: visible; 
+
+    @include breakpoint(md) {
+        display: block;
+    }
+}
+    .hamburger:hover {
+      opacity: 0.7; }
+    .hamburger.is-active:hover {
+      opacity: 0.7; }
+    .hamburger.is-active .hamburger-inner,
+    .hamburger.is-active .hamburger-inner::before,
+    .hamburger.is-active .hamburger-inner::after {
+      background-color: #4B321D; }
+  
+  .hamburger-box {
+    width: 40px;
+    height: 24px;
+    display: inline-block;
+    position: relative; }
+  
+  .hamburger-inner {
+    display: block;
+    top: 50%;
+    margin-top: -2px; }
+    .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+      width: 40px;
+      height: 4px;
+      background-color: #4B321D;
+      border-radius: 4px;
+      position: absolute;
+      transition-property: transform;
+      transition-duration: 0.15s;
+      transition-timing-function: ease; }
+    .hamburger-inner::before, .hamburger-inner::after {
+      content: "";
+      display: block; }
+    .hamburger-inner::before {
+      top: -10px; }
+    .hamburger-inner::after {
+      bottom: -10px; }
+
+.hamburger--spin .hamburger-inner {
+transition-duration: 0.22s;
+transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19); }
+.hamburger--spin .hamburger-inner::before {
+    transition: top 0.1s 0.25s ease-in, opacity 0.1s ease-in; }
+.hamburger--spin .hamburger-inner::after {
+    transition: bottom 0.1s 0.25s ease-in, transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19); }
+
+.hamburger--spin.is-active .hamburger-inner {
+transform: rotate(225deg);
+transition-delay: 0.12s;
+transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
+.hamburger--spin.is-active .hamburger-inner::before {
+    top: 0;
+    opacity: 0;
+    transition: top 0.1s ease-out, opacity 0.1s 0.12s ease-out; }
+.hamburger--spin.is-active .hamburger-inner::after {
+    bottom: 0;
+    transform: rotate(-90deg);
+    transition: bottom 0.1s ease-out, transform 0.22s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1); }
+
+.creating {
+    padding: 85px 0 136px;
+
+    @include breakpoint(md) {
+        padding: 45px 0 65px;
+    }
+    @include breakpoint(xs) {
+        padding: 40px 0 55px;
+    }
+}
+
+.help {
+    padding: 85px 0 90px;
+
+    @include breakpoint(md) {
+        padding: 50px 0 65px;
+    }
+    @include breakpoint(xs) {
+        padding: 40px 0 55px;
+    }
+
+    &__title {
+        margin-bottom: 55px;
+
+        @include breakpoint(md) {
+            margin-bottom: 45px;
+        }
+        @include breakpoint(xs) {
+            margin-bottom: 35px;
+        }
+    }
+
+    &__button {
+        display: inline-block;
+        margin-bottom: 90px;
+
+        @include breakpoint(md) {
+            margin-bottom: 60px;
+        }
+        @include breakpoint(xs) {
+            margin-bottom: 40px;
+        }
+    }
+}
+
+.card {
+    margin-bottom: 90px;
+
+    @include breakpoint(md) {
+        margin-bottom: 60px;
+    }
+    @include breakpoint(xs) {
+        margin-bottom: 40px;
+    }
+
+    &__img-block {
+        width: 50%;
+        
+        @include breakpoint(xs) {
+            width: 100%;
+        }
+    }
+
+    &__text-block {
+        width: 50%;
+
+        @include breakpoint(xs) {
+            width: 100%;
+        }
+    }
+
+    &__img {
+        border-radius: 16px;
+    }
+
+    &__text-holder {
+        padding-left: 100px;
+
+        @include breakpoint(md) {
+            font-size: 20px;
+            line-height: 24px;
+            padding-left: 50px;
+        }
+        @include breakpoint(xs) {
+            padding-left: 0;
+        }
+    }
+
+    &:nth-child(even) {
+        flex-direction: row-reverse;
+
+        .card__text-holder {
+            padding: 0 100px 0 0;
+
+            @include breakpoint(xs) {
+                padding: 0;
+            }
+        }
+    }
+
+}
+
+.lorem {
+    margin-bottom: 85px;
+
+    @include breakpoint(md) {
+        margin-bottom: 60px;
+    }
+    @include breakpoint(xs) {
+        margin-bottom: 40px;
+    }
+    
+    &__title {
+        display: block;
+        color: $light;
+        font-size: 80px;
+        line-height: 100px;
+        margin-bottom: 45px;
+
+        @include breakpoint(md) {
+            font-size: 40px;
+            line-height: 50px;
+            margin-bottom: 30px;
+        }
+        @include breakpoint(xs) {
+            font-size: 25px;
+            line-height: 33px;
+            margin-bottom: 20px;
+        }
+    }
+
+    &__subtitle {
+        display: block;
+        color: $light;
+        font-size: 26px;
+        line-height: 36px;
+
+        @include breakpoint(md) {
+            font-size: 15px;
+            line-height: 30px;
+        }
+        @include breakpoint(xs) {
+            font-size: 13px;
+            line-height: 20px;
+        }
+    }
+
+    .container {
+        background-color: $brown;
+        border-radius: 16px;
+        padding: 84px 60px 110px;
+        
+        @include breakpoint(md) {
+            padding: 55px 40px 70px;
+        }
+        @include breakpoint(xs) {
+            padding: 45px 30px 50px;
+        }
+    }
+}
+
+.fit {
+
+    &__title {
+        margin-bottom: 55px;
+
+        @include breakpoint(md) {
+            margin-bottom: 40px;
+        }
+        @include breakpoint(xs) {
+            margin-bottom: 25px;
+        }
+    }
+
+    &__button {
+        margin-bottom: 90px;
+
+        @include breakpoint(md) {
+            margin-bottom: 60px;
+        }
+        @include breakpoint(xs) {
+            margin-bottom: 40px;
+        }
+    }
+}
+
+.footer {
+    padding-bottom: 100px;
+
+    &__pic-block {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &__text-holder {
+        margin-bottom: 83px;
+    }
+    
+    &__img-holder {
+        width: 100%;
+        max-width: 50px;
+    }
+
+    &__text {
+        display: block;
+        font-size: 18px;
+        line-height: 29px;
+    }
+
+    &__column-block {
+        font-size: 0;
+        display: flex;
+    }
+
+    &__column {
+        padding-left: 180px;
+
+        @include breakpoint(xl) {
+            padding-left: 120px;
+        }
+        @include breakpoint(md) {
+            padding-left: 60px;
+        }
+        @include breakpoint(xs) {
+            padding-left: 35px;
+        }
+    }
+
+
+    &__link {
+        font-size: 18px;
+        line-height: 29px;
+        color: #4B321D;
+
+        @include breakpoint(md) {
+            font-size: 13px;
+            line-height: 15px;
+        }
+    }
+}

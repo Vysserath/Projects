@@ -1,0 +1,709 @@
+// vertical align el inside parent with fixed height/min-height
+// usage
+// html - .parent>.child
+// scss - @include v-align;
+//     or @include v-align(250px);
+//     or @include v-align(250px, bottom, before);
+//
+@mixin v-align($va-height: 100%, $va-direction: middle, $va-pseudo: after) {
+    white-space: nowrap;
+    text-align: center;
+  
+    &:#{$va-pseudo} {
+      content: '';
+      display: inline-block;
+      vertical-align: $va-direction;
+      width: 0;
+      min-height: $va-height;
+    }
+  
+    > * {
+      white-space: normal;
+      display: inline-block;
+      vertical-align: $va-direction;
+      max-width: 100%;
+    }
+  }
+  
+  // vertical align a pair of child el inside parent
+  // usage
+  // html - .post>.image+.text
+  // scss - @include v-align-pair(image, text);
+  //     or @include v-align-pair(image, text, bottom);
+  //     or @include v-align-pair(image, text, middle, 200px);
+  //
+  @mixin v-align-pair($child-name1, $child-name2, $valign: middle, $width1: auto, $width2: auto ) {
+    display: table;
+    .#{$child-name1}{
+      display: table-cell;
+      vertical-align: $valign;
+      width: $width1;
+    }
+    .#{$child-name2} {
+      display: table-cell;
+      vertical-align: $valign;
+      width: $width2;
+    }
+  }
+  
+  
+  // vertical align el
+  // usage: @include vertical-align-el;
+  //
+  @mixin vertical-align-el {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  @mixin middle() {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* mixin usage */
+  // .linear-gradient {
+  // @include linear-gradient(#00FFFF,#0080FF,45deg);
+  // }
+  
+  @mixin linear-gradient($color-one,$color-two,$degrees) {
+    background: -moz-linear-gradient($degrees, $color-one 0%, $color-two 100%); /* ff3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, $color-one), color-stop(100%, $color-two)); /* safari4+,chrome */
+    background: -webkit-linear-gradient($degrees, $color-one 0%, $color-two 100%); /* safari5.1+,chrome10+ */
+    background: -o-linear-gradient($degrees, $color-one 0%, $color-two 100%); /* opera 11.10+ */
+    background: -ms-linear-gradient($degrees, $color-one 0%, $color-two 100%); /* ie10+ */
+    background: linear-gradient($degrees, $color-one 0%, $color-two 100%); /* w3c */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color-one', endColorstr='$color-two',GradientType=1 ); /* ie6-9 */
+  }
+  
+  //
+  // @include rotate(rl);
+  //
+  
+  @mixin rotate($direction: rl) {
+    @if $direction == rl {
+      writing-mode: sideways-rl;
+      -ms-writing-mode: tb-rl;
+      -webkit-writing-mode: vertical-rl;
+    }
+    @else {
+      writing-mode: sideways-lr;
+      -ms-writing-mode: tb-lr;
+      -webkit-writing-mode: vertical-lr;
+    }
+  }
+  
+  /// Mixin helping defining both `width` and `height` simultaneously.
+  ///
+  /// @author Hugo Giraudel
+  ///
+  /// @access public
+  ///
+  /// @param {Length} $width - Element’s `width`
+  /// @param {Length} $height ($width) - Element’s `height`
+  ///
+  /// @example scss - Usage
+  ///   .foo {
+  ///     @include size(10em);
+  ///   }
+  ///
+  ///   .bar {
+  ///     @include size(100%, 10em);
+  ///   }
+  ///
+  /// @example css - CSS output
+  ///   .foo {
+  ///     width: 10em;
+  ///     height: 10em;
+  ///   }
+  ///
+  ///   .bar {
+  ///     width: 100%;
+  ///     height: 10em;
+  ///   }
+  ///
+  @mixin size($width, $height: $width) {
+    width: $width;
+    height: $height;
+  }
+  
+  /// font-smothing
+  /// @include font-smoothing(on);
+  /// @include font-smoothing(off);
+  @mixin font-smoothing($value:on){
+    @if $value == on{
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    @else{
+      -webkit-font-smoothing:subpixel-antialiased;
+      -moz-osx-font-smoothing:auto;
+    }
+  }
+  
+  
+  /// Hides the text in an element, commonly used to show an image. Some elements will need block-level styles applied.
+  ///
+  /// @link http://zeldman.com/2012/03/01/replacing-the-9999px-hack-new-image-replacement
+  ///
+  /// @example scss - Usage
+  ///   .element {
+  ///     @include hide-text;
+  ///   }
+  ///
+  /// @example css - CSS Output
+  ///   .element {
+  ///     overflow: hidden;
+  ///     text-indent: 101%;
+  ///     white-space: nowrap;
+  ///   }
+  ///
+  @mixin hide-text {
+    overflow: hidden;
+    text-indent: 101%;
+    white-space: nowrap;
+  }
+  
+  
+  /// Creates a visual triangle.
+  /// Mixin takes ($size, $color, $direction)
+  /// The $size argument can take one or two values—width height.
+  /// The $color argument can take one or two
+  /// values—foreground-color background-color.
+  ///
+  /// @author http://bourbon.io/docs/#triangle
+  ///
+  /// $direction:
+  /// up, down, left, right, up-right, up-left, down-right, down-left
+  /// @example scss - Usage
+  ///   @include triangle(12px, gray, down);
+  ///   @include triangle(12px 6px, gray blue, up-left);
+  ///
+  @mixin triangle($size, $color, $direction) {
+    $width: nth($size, 1);
+    $height: nth($size, length($size));
+    $foreground-color: nth($color, 1);
+    $background-color: if(length($color) == 2, nth($color, 2), transparent);
+    height: 0;
+    width: 0;
+  
+    @if ($direction == up) or ($direction == down) or ($direction == right) or ($direction == left) {
+      $width: $width / 2;
+      $height: if(length($size) > 1, $height, $height/2);
+  
+      @if $direction == up {
+        border-bottom: $height solid $foreground-color;
+        border-left: $width solid $background-color;
+        border-right: $width solid $background-color;
+      } @else if $direction == right {
+        border-bottom: $width solid $background-color;
+        border-left: $height solid $foreground-color;
+        border-top: $width solid $background-color;
+      } @else if $direction == down {
+        border-left: $width solid $background-color;
+        border-right: $width solid $background-color;
+        border-top: $height solid $foreground-color;
+      } @else if $direction == left {
+        border-bottom: $width solid $background-color;
+        border-right: $height solid $foreground-color;
+        border-top: $width solid $background-color;
+      }
+    } @else if ($direction == up-right) or ($direction == up-left) {
+      border-top: $height solid $foreground-color;
+  
+      @if $direction == up-right {
+        border-left:  $width solid $background-color;
+      } @else if $direction == up-left {
+        border-right: $width solid $background-color;
+      }
+    } @else if ($direction == down-right) or ($direction == down-left) {
+      border-bottom: $height solid $foreground-color;
+  
+      @if $direction == down-right {
+        border-left:  $width solid $background-color;
+      } @else if $direction == down-left {
+        border-right: $width solid $background-color;
+      }
+    } @else if ($direction == inset-up) {
+      border-color: $background-color $background-color $foreground-color;
+      border-style: solid;
+      border-width: $height $width;
+    } @else if ($direction == inset-down) {
+      border-color: $foreground-color $background-color $background-color;
+      border-style: solid;
+      border-width: $height $width;
+    } @else if ($direction == inset-right) {
+      border-color: $background-color $background-color $background-color $foreground-color;
+      border-style: solid;
+      border-width: $width $height;
+    } @else if ($direction == inset-left) {
+      border-color: $background-color $foreground-color $background-color $background-color;
+      border-style: solid;
+      border-width: $width $height;
+    }
+  }
+  
+  
+  /// Animate css properties
+  // usage
+  // scss - @include animate(color);
+  //     or @include animate(color width);
+  //     or @include animate(color width, 1s, linear);
+  //
+  $animation-speed: .3s !default;
+  
+  @mixin animate($properties, $duration: $animation-speed, $easing: ease) {
+    $list:();
+    @each $prop in $properties {
+      $str: #{$prop} #{$duration} #{$easing};
+      $list: join($list, #{$str}, comma);
+    }
+    transition: $list;
+  }
+  
+  
+  /// Mixin for styling form-placeholders
+  /// @example scss - Usage
+  ///   @include placeholder {
+  ///    color: #333;
+  ///   }
+  ///
+  ///   input[type='text'],
+  ///   input[type='tel'],
+  ///   input[type='email'] {
+  ///     @include placeholder {
+  ///      color: red;
+  ///     }
+  ///   }
+  
+  @mixin placeholder {
+    &::-webkit-input-placeholder {@content}
+    &::-moz-placeholder {opacity: 1; @content}
+    &:-moz-placeholder {@content}
+    &:-ms-input-placeholder {@content}
+    &.placeholder {@content}
+  }
+  
+  /// Font-size px to rem calc
+  /// @example scss - Usage
+  /// selector {
+  ///    @include rem-font-size(16px);
+  /// }
+  
+  @mixin rem-font-size($pxSize) {
+    font-size: $pxSize;
+    font-size: ($pxSize / 10px) + rem;
+  }
+  
+  //
+  // @include inline-grid(top);
+  //
+  
+  @mixin inline-grid($valign: middle) {
+    @extend %listreset;
+  
+    font-size: 0;
+  
+    > li {
+      display: inline-block;
+      vertical-align: $valign;
+      font-size: 14px;
+    }
+  }
+  
+  //
+  // @include float-grid(33.332%, 20px);
+  //
+  
+  @mixin float-grid($width: 50%, $space: 0) {
+    @extend %clearfix;
+  
+    .col {
+      float: left;
+      width: calc($width - $space * 2);
+      margin: 0 $space;
+    }
+  }
+  
+  //
+  // @include swap-order(float);
+  // @include swap-order(flex);
+  //
+  
+  @mixin swap-order($prop: 'flex') {
+    @if $prop == 'float' {
+      @extend %clearfix;
+  
+      > .swap {
+        float: left;
+      }
+    }
+    @else {
+      display: flex;
+      flex-wrap: wrap;
+  
+      > .swap {
+        order: 1;
+      }
+    }
+  }
+  
+  //
+  // @include stretch-blocks(50%, middle);
+  //
+  
+  @mixin stretch-blocks($width: 50%, $valign: top) {
+    display: table;
+    table-layout: fixed;
+  
+    .stretch-wrap {
+      display: table-row;
+    }
+  
+    .stretch-col {
+      display: table-cell;
+      vertical-align: $valign;
+      width: $width;
+    }
+  }
+  
+  //
+  // @include multiline-ellipsis(1.2, 2, black);
+  //
+  
+  @mixin multiline-ellipsis($lineh: 1.2em, $lines: 3, $bg: white) {
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: justify;
+    margin-right: -1em;
+    padding-right: 1em;
+    line-height: $lineh;
+    max-height: $lineh * $lines;
+  
+    &:before {
+      content: '...';
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+  
+    &:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      width: 1em;
+      height: 1em;
+      margin-top: .2em;
+      background: $bg;
+    }
+  }
+  
+  //
+  // @include attr(href);
+  //
+  
+  @mixin attr($attr) {
+    content: attr($attr);
+  }
+  
+  //
+  // @include counter(list, section);
+  //
+  
+  @mixin counter($children, $name, $txt) {
+    @extend %listreset;
+  
+    counter-reset: $name;
+  
+    .#{$children} {
+      position: relative;
+  
+      &:before {
+        counter-increment: $name;
+        content: counter($name) $txt;
+      }
+    }
+  }
+  
+  //
+  // @include calc(height, 100px, vh);
+  //
+  
+  @mixin calc($property: width, $size: 0, $val: '%') {
+    $property: calc(100 + $val - $size);
+  }
+  
+  //
+  //@include pseudo();
+  //
+  
+  @mixin pseudo($content: '', $pos: absolute, $display: block) {
+    content: '#{$content}';
+    display: $display;
+    position: $pos;
+  }
+  
+  /*--------------------------------
+      Responsive ratio
+      Used for creating scalable elements that maintain the same ratio
+      example:
+      .element {
+          @include responsive-ratio(400, 300);
+      }
+  */
+  
+  @mixin responsive-ratio($x, $y, $pseudo: false) {
+    $padding: unquote( ( $y / $x ) * 100 + '%' );
+  
+    @if $pseudo {
+      &:before {
+        @include pseudo($pos: relative);
+  
+        width: 100%;
+        padding-top: $padding;
+      }
+    } @else {
+      padding-top: $padding;
+    }
+  }
+  
+  //
+  // @include cubic(.1, .7, 1.0, .1)
+  //
+  
+  @mixin cubic($x: .3, $y: .6, $a: .3, $b: .3) {
+    transition-timing-function: cubic-bezier($x, $y, $a, $b);
+  }
+  
+  @mixin unselectable {
+    -webkit-touch-callout: none;
+    user-select: none;
+  }
+  
+  @mixin selection {
+    ::-moz-selection { @content; }
+    ::selection { @content; }
+  }
+  
+  @mixin hardware($backface: true, $perspective: 1000) {
+  
+    @if $backface {
+      backface-visibility: hidden;
+    }
+  
+    perspective: $perspective;
+  }
+  
+  @mixin appearance($val: none) {
+    -webkit-appearance: $val;
+    -moz-appearance: $val;
+    appearance: $val;
+  }
+  
+  //
+  //@include icomoon(/0900);
+  //
+  
+  @mixin icomoon($content: false) {
+    @if $content {
+      content: '#{$content}';
+    }
+  
+    display: block;
+    font-family: "icomoon" !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    speak: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  //
+  // @include z-i(absolute, 9999);
+  //
+  
+  @mixin z-i($pos: relative, $count: 999) {
+    position: $pos;
+    z-index: $count;
+  }
+  
+  // div {
+  //    @include absolute(100px, 100px, auto, auto);
+  // }
+  
+  @mixin absolute($top: 0, $right: 0, $bottom: 0, $left: 0) {
+    position: absolute;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+  }
+  
+  //
+  // @include flex(center, justify-content);
+  //
+  
+  @mixin flex($align: center, $justify: center) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: $align;
+    justify-content: $justify;
+  }
+  
+  //
+  // @include bg(contain);
+  //
+  
+  @mixin bg($size: cover, $pos: 50% 50%) {
+    background-repeat: no-repeat;
+    background-position: $pos;
+    background-size: $size;
+  }
+  
+  //
+  //include AFS(20px, 5, 480, 768);
+  //
+  
+  // font-size: calc([minimum size] + ([maximum size] - [minimum size]) *
+  // ((100vw - [minimum viewport width]) / ([maximum viewport width] - [minimum viewport width])));
+  
+  @mixin AFS($minS: 16px, $maxS: 6, $minWidth: 320, $maxWidth: 680) {
+    font-size: calc($minS + $maxS * ((100vw - $minWidth + 'px') / $maxWidth));
+  }
+  
+  @mixin FFS($minS: 16px, $maxS: 6, $minWidth: 320, $maxWidth: 680) {
+    font-size: calc($minS + ($maxS - $minS) * ((100vw - $minWidth + 'px') / ($maxWidth - $minWidth)));
+  }
+  
+  //
+  // @include column(3);
+  //
+  
+  @mixin column($count: 2, $gap: 20px) {
+    column-count: $count;
+    column-gap: $gap;
+  }
+  
+  // @include keyframes(slide-down) {
+  //   0% { opacity: 1; }
+  //   90% { opacity: 0; }
+  // }
+  
+  // .element {
+  //   width: 100px;
+  //   height: 100px;
+  //   background: black;
+  //   @include animation('slide-down 5s 3');
+  // }
+  
+  @mixin keyframes($animation-name) {
+    @-webkit-keyframes #{$animation-name} {
+      @content;
+    }
+    @-moz-keyframes #{$animation-name} {
+      @content;
+    }
+    @-ms-keyframes #{$animation-name} {
+      @content;
+    }
+    @-o-keyframes #{$animation-name} {
+      @content;
+    }
+    @keyframes #{$animation-name} {
+      @content;
+    }
+  }
+  
+  @mixin animation($str) {
+    -webkit-animation: #{$str};
+    -moz-animation: #{$str};
+    -ms-animation: #{$str};
+    -o-animation: #{$str};
+    animation: #{$str};
+  }
+  
+  // @each $name in 'save' 'cancel' 'help' {
+  //     .icon-#{$name} {
+  // background-image: url('/images/#{$name}.png');
+  //     }
+  // }
+  
+  // .icon-save {
+  //   background-image: url("/images/save.png");
+  // }
+  // .icon-cancel {
+  //   background-image: url("/images/cancel.png");
+  // }
+  // .icon-help {
+  //   background-image: url("/images/help.png");
+  // }
+  
+  // @include icon-colors('icon-',
+  //     'save'   green,
+  //     'cancel' gray,
+  //     'delete' red
+  // );
+  
+  @mixin icon-colors($prefix, $colors...) {
+    @each $i in $colors {
+      .#{$prefix}#{nth($i, 1)} {
+        color: nth($i, 2);
+      }
+    }
+  }
+  
+  // .icon-save {
+  //   color: green;
+  // }
+  // .icon-cancel {
+  //   color: gray;
+  // }
+  // .icon-delete {
+  //   color: red;
+  // }
+  
+  @mixin img_fit() {
+    width: 100%;
+    height: 100%;
+    max-width: initial;
+    object-fit: cover;
+    object-position: center;
+  }
+  
+  $grid-breakpoints: (
+          xxs: 360px,
+          xs: 568px,
+          sm: 640px,
+          md: 768px,
+          lg: 1024px,
+          xl: 1200px,
+          xxl: 1440px,
+          xxxl: 1920px
+  );
+  
+  @mixin breakpoint($size, $rule: max-width) {
+    @media (#{$rule}: map-get($grid-breakpoints, $size) - 1px) {
+      @content;
+    }
+  }
+  
+  @mixin breakpoint-mf($size, $rule: min-width) {
+    @media (#{$rule}: map-get($grid-breakpoints, $size)) {
+      @content;
+    }
+  }
+  
+  @mixin breakpoint-between($min-size, $max-size) {
+    $min: map-get($grid-breakpoints, $min-size);
+    $max: map-get($grid-breakpoints, $max-size) - 1px;
+  
+    @media (min-width: $min) and (max-width: $max) {
+      @content;
+    }
+  }
