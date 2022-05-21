@@ -1,0 +1,703 @@
+@import 'mixins';
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body,
+h1, h2, h3, h4,
+ul, ol, li,
+p {
+    padding: 0;
+    margin: 0;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {text-decoration: none;}
+
+ul, ol {
+    list-style: none;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+
+    &_flex {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.header {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    @include breakpoint(md){
+        
+    }
+
+    .nav {
+        transition: all ease-in-out 0.3s;
+
+        @include breakpoint(md){
+            background-color: #000;
+            position: fixed;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            z-index: 100;
+            transform: translateX(-100%);
+        }
+        
+        &__list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+    
+            @include breakpoint(md){
+                flex-direction: column;
+                padding-right: 50px;
+            }
+        }
+    
+        &__item {
+            position: relative;
+            display: block;
+            padding: 0 0 0 70px;
+    
+            @include breakpoint(xl){
+                padding: 0 0 0 35px;
+            }
+            @include breakpoint(md){
+                font-size: 30px;
+            }
+            
+        }
+    
+        &__link {
+            position: relative;
+            color: white;
+
+            @include breakpoint(md){
+                display: block;
+            }
+            
+            &:hover::after {
+                content: '';
+                width: 70px;
+                height: 1px;
+                background-color: #fff;
+                position: absolute;
+                left: 50%;
+                bottom: -36px;
+                transform: translateX(-50%);
+
+                @include breakpoint(xl){
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .container {
+        padding: 30px 0;
+        border-bottom: 1px solid #2a2b2e;
+
+        @include breakpoint(xl){
+            padding: 30px 20px;
+        }
+        @include breakpoint(md){
+            border: none;
+        }
+    }
+
+    &.is-active{
+
+        .nav{   
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .hamburger {
+            span{
+                transform: translate(-50%,-50%) rotate(45deg);
+            }
+        
+            &::before{
+                top: 50%;
+                left:50%;
+                transform: translate(-50%,-50%) rotate(45deg);
+            }
+        
+            &::after{
+                bottom:50%;
+                left:50%;
+                transform: translate(-50%, 50%) rotate(-45deg);
+            }
+        }
+    }
+}
+
+.hamburger{
+    display: none;
+
+    @include breakpoint ('md'){
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        width: 30px;
+        height: 20px;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        z-index: 3;
+    }
+
+    &::before{
+        content: '';
+        width: 30px;
+        height: 2px;
+        border-radius: 4px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: white;
+        transition: all ease-in-out 0.3s;
+    }
+
+    &::after{
+        content: '';
+        width: 30px;
+        height: 2px;
+        border-radius: 4px;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: white;
+        transition: all ease-in-out 0.3s;
+    }
+
+    span{
+        width: 30px;
+        height: 2px;
+        border-radius: 4px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        transition: all ease-in-out 0.3s;
+    }
+}
+
+.main {
+}
+
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hello {
+    background-image: url(../img/background.png);
+    text-align: center;
+    color: white;
+
+    &__title {
+        font-size: 69px;
+        margin-bottom: 15px;
+        letter-spacing: 0;
+    }
+
+    &__subtitle {
+        display: block;
+        font-size: 29px;
+        font-style: italic;
+        font-family: 'Libre Baskerville', serif;
+        margin-bottom: 20px;
+    }
+
+    &__button {
+        position: relative;
+        display: block;
+        width: 50%;
+        color: white;
+        padding: 50px 0;
+        font-size: 21px;
+        transition: all 0.3s ease-in-out;
+        z-index: 0;
+
+        @include breakpoint(xl){
+            font-size: 17px;
+            padding: 35px 0;
+        }
+
+        &_blue {
+            background-color: #1b4049;
+
+            &:hover{
+                color: #2bae6c;
+            }
+        }
+
+        &_green {
+            background-color: #2bae6c;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -24px;
+                width: 50px;
+                height: 100%;
+                background: #2bae6c;
+                transform: skewX(-20deg);
+            }
+
+            &:hover{
+                color: #1b4049;
+            }
+        }
+    }
+
+    .container {
+        padding: 410px 0 350px;
+
+        @include breakpoint(xl){
+            padding: 300px 0 275px;
+        }
+    }
+}
+
+.about {
+    padding: 105px 0;
+
+    @include breakpoint(lg){
+        padding: 65px 0;
+    }
+    @include breakpoint(md){
+        padding: 50px 0;
+    }
+
+    &__text-block {
+        width: 45%;
+        border-right: 2px dashed #d7d7d7;
+
+        @include breakpoint(md){
+            width: 100%;
+            border: none;
+            margin-bottom: 25px;
+        }
+    }
+
+    &__designer-block {
+        width: 55%;
+        display: flex;
+
+        @include breakpoint(md){
+            width: 100%;
+        }
+    }
+
+    &__title {
+        font-size: 34px;
+        margin-bottom: 18px;
+
+        @include breakpoint(xl){
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        @include breakpoint(md){
+            font-size: 20px;
+        }
+    }
+
+    &__text {
+        font-size: 17px;
+        max-width: 420px;
+        display: block;
+        color: #000;
+
+        @include breakpoint(xl){
+            font-size: 15px;
+        }
+
+        @include breakpoint(md){
+            max-width: 100%;
+            font-size: 14px;
+        }
+    }
+}
+
+.designer {
+    width: calc(100% / 3);
+    text-align: center;
+
+    &__img-holder {
+        margin-bottom: 10px;
+    }
+
+    &__img {
+        margin: 0 auto;
+        border: 5px solid #d7d7d7;
+        border-radius: 50px;
+
+        @include breakpoint(xs){
+            max-width: 80px;
+            border-radius: 40px;
+            border: 3px solid #d7d7d7;
+        }
+    }
+
+    &__title {
+        font-size: 15px;
+        margin-bottom: 5px;
+
+        @include breakpoint(md){
+            font-size: 13px;
+        }
+    }
+
+    &__subtitle {
+        display: block;
+        color: #bfbfbf;
+        margin-bottom: 10px;
+
+        @include breakpoint(md){
+            font-size: 11px;
+        }
+    }
+}
+
+.social {
+
+    &__list {
+        max-width: 90px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        @include breakpoint(md){
+            max-width: 75px;
+        }
+    }
+
+    &__link {
+        font-size: 15px;
+        transition: all 0.2s ease-in-out;
+        color: #646464;
+
+        &:hover {
+            color: #198abb;
+        }
+    }
+}
+
+.slider {
+    background-image: url(../img/back_line.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 0 70%;
+    color: white;
+    padding-top: 50px;
+    height: 190px;
+    position: relative;
+    
+    @include breakpoint(md){
+        height: 250px;
+    }
+
+    &__item {
+
+        &_animation {
+            -webkit-animation-name: fade;
+            -webkit-animation-duration: 1s;
+            animation-name: fade;
+            animation-duration: 1s;
+
+            @-webkit-keyframes fade {
+                from{opacity: 0.2;}
+                to{opacity: 1;}
+            }
+
+            @keyframes fade {
+                from{opacity: 0.2;}
+                to{opacity: 1;}
+            }
+        }
+    }
+
+    &__text {
+        text-align: center;
+    }
+
+    &__name {
+        margin-right: 15px;
+        position: relative;
+
+        &::after{
+            content: '';
+            height: 16px;
+            width: 1px;
+            background-color: #979797;
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+
+    &__dots {
+        position: absolute;
+        width: 130px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        left: 50%;
+        top: 165px;
+        transform: translateX(-50%);
+
+        @include breakpoint(md){
+            top: 215px;
+        }
+    }
+
+    &__dot {
+        cursor: pointer;
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
+        border: 1px solid white;
+        display: inline-block;
+    }
+
+    .active {
+        background-color: #fff;
+    }
+}
+
+.servers {
+    padding: 100px 0;
+
+    @include breakpoint(lg){
+        padding: 65px 0;
+    }
+    @include breakpoint(md){
+        padding: 50px 0;
+    }
+
+    &__card {
+        width: 25%;
+        padding: 0 15px;
+        text-align: center;
+
+        @include breakpoint(md){
+            width: 50%;
+            margin-bottom: 25px;
+        }
+    }
+
+    &__img-holder {
+        font-size: 24px;
+        line-height: 24px;
+        padding: 19px 0 16px;
+        max-width: 60px;
+        margin: 0 auto 20px;
+        color: white;
+        border-radius: 30px;
+        
+        &_yellow {
+            background-color: #f1c507;
+        }
+        &_blue {
+            background-color: #06b1f1;
+        }
+        &_grey {
+            background-color: #96a6a8;
+        }
+        &_orange {
+            background-color: #f15307;
+        }
+    }
+
+    &__title {
+        font-size: 16px;
+        margin-bottom: 5px;
+
+        @include breakpoint(xl){
+            font-size: 13px;
+        }
+    }
+
+    &__subtitle {
+        font-size: 15px;
+        color: #bfbfbf;
+
+        @include breakpoint(xl){
+            font-size: 12px;
+        }
+    }
+}
+
+.footer {
+    background-color: #252525;
+    padding: 95px 0;
+    color: #646464;
+    
+    @include breakpoint(xl){
+        font-size: 12px;
+        padding: 65px 0;
+    }
+    @include breakpoint(md){
+        padding: 50px 0;
+    }
+
+    &__text-block {
+        width: calc(100% / 3);
+        padding-right: 50px;
+
+        @include breakpoint(lg){
+            padding-right: 20px;
+        }
+        @include breakpoint(md){
+            width: 100%;
+            order: 3;
+        }
+        @include breakpoint(xs){
+            width: 100%;
+            order: 1;
+            margin-bottom: 20px;
+        }
+    }
+
+    &__list-block {
+        width: calc(100% / 3);
+        display: flex;
+        padding: 0 50px;
+        border-left: 1px solid #363636;
+        border-right: 1px solid #363636;
+
+        @include breakpoint(lg){
+            padding: 0 20px;
+        }
+        @include breakpoint(md){
+            width: 50%;
+            order: 1;
+            border-left: none;
+            margin-bottom: 20px;
+        }
+        @include breakpoint(xs){
+            width: 100%;
+            order: 3;
+            padding: 0 10px;
+            border-right: none;
+        }
+    }
+
+    &__contact-block {
+        width: calc(100% / 3);
+        padding-left: 50px;
+
+        @include breakpoint(lg){
+            padding-left: 20px;
+        }
+        @include breakpoint(md){
+            width: 50%;
+            order: 2;
+            margin-bottom: 20px;
+        }
+        @include breakpoint(xs){
+            width: 100%;
+            order: 2;
+            border-top: 1px solid #363636;
+            border-bottom: 1px solid #363636;
+            padding: 15px 0;
+        }
+    }
+
+    &__list {
+
+        &:first-of-type {
+            margin-right: 70px;
+
+            @include breakpoint(lg){
+                margin-right: 30px;
+            }
+            @include breakpoint(sm){
+                margin-right: 50px;
+            }
+        }
+    }
+
+    &__item {
+        margin-bottom: 10px;
+        position: relative;
+        transition: all 0.3s ease-in-out;
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -10px;
+            width: 6px;
+            height: 6px;
+            border-bottom: 1px solid #646464;
+            border-right: 1px solid #646464;
+            transform: rotate(-45deg) translateY(-50%);
+            transition: all 0.3s ease-in-out;
+        }
+
+        &:hover {
+            margin-left: 5px;
+            margin-right: -5px;
+            &::after {
+                left: -15px;
+                border-color: white;
+            }
+        }
+    }
+
+    &__link {
+        color: #646464;
+        transition: all 0.3s ease-in-out;
+        
+        &_contacts {
+            display: block;
+        }
+
+        &_author {
+            font-weight: bold;
+        }
+
+        &:hover {
+            color: white;
+        }
+    }
+}
